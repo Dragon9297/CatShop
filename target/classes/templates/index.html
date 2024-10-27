@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cat Shop</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<header>
+
+    <div class="container justify-content-xl-center">
+        <h1  class="text-center">Ласкаво просимо на сайт</h1>
+        <div class="d-flex justify-content-around">
+            <a th:href="@{/login}" th:if="${!isLoggedIn}"  class="btn btn-success">Увійти</a>
+            <a th:href="@{/register}" th:if="${!isLoggedIn}"  class="btn btn-success">Реєстрація</a>
+            <a th:href="@{/add-cat}" th:if="${isLoggedIn}" class="btn btn-success">Додати кота</a>
+            <a th:href="@{/cart}" th:if="${isLoggedIn}" class="btn btn-danger">Кошик</a>
+            <a th:href="@{/logout}" th:if="${isLoggedIn}" class="btn btn-danger">Вийти</a>
+
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <h2 class="mt-5">Список котів</h2>
+    <table class="table table-striped mt-3">
+        <thead>
+        <tr>
+            <th>Ім'я</th>
+            <th>Порода</th>
+            <th>Вік</th>
+            <th>Ціна</th>
+            <th>Дія</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cat : ${cats}">
+            <td th:text="${cat.name}">Ім'я</td>
+            <td th:text="${cat.breed}">Порода</td>
+            <td th:text="${cat.age}">Вік</td>
+            <td th:text="${cat.price}">Ціна</td>
+            <td>
+                <form th:action="@{/cart/add}" method="post" th:if="${isLoggedIn}">
+                    <input type="hidden" name="catId" th:value="${cat.id}"/>
+                    <button type="submit" >Додати в кошик</button>
+                </form>
+                <span th:if="${!isLoggedIn}">Спочатку увійдіть</span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<footer class="bg-light text-center ">
+    <p>&copy; 2024 Cat Shop</p>
+</footer>
+</body>
+</html>
